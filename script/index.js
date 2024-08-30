@@ -104,7 +104,7 @@ app.get("/emprestimo/",async function(req, res) {
 })
 
 app.get("/emprestimo/:id",async function(req, res) {
-    const resultado = await emprestimo.emprestimo.findByPk(req.params.id)
+    const resultado = await emprestimo.emprestimo.findByPk(req.params.id, { include: {model: livro.livro, model: cliente.cliente}})
     if( resultado == null ){
         res.status(404).send({})
     }else{
