@@ -30,8 +30,8 @@ app.post("/livro/",async function(req,res){
 
 app.post("/emprestimo/",async function(req,res){
     const resultado = await emprestimo.emprestimo.create({
-        fk_livro:req.body.fk_livro,
-        fk_cliente:req.body.fk_cliente,
+        livroId:req.body.livroId,
+        clienteId:req.body.clienteId,
         datadevolucao:req.body.datadevolucao
     })
     res.send(resultado)

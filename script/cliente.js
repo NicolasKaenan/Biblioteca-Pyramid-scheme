@@ -1,5 +1,6 @@
 const sequelize = require("sequelize");
 const banco = require("./banco")
+const emprestimo = require("./emprestimo.js") 
 
 var cliente = banco.conexao.define(
     "cliente",
@@ -25,4 +26,6 @@ var cliente = banco.conexao.define(
     },
     { timestamps: false }
 )
+emprestimo.emprestimo.belongsTo( cliente )
+cliente.hasMany( emprestimo.emprestimo )
 module.exports = {cliente}

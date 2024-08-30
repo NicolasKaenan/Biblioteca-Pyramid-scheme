@@ -10,13 +10,13 @@ var emprestimo = banco.conexao.define(
             primaryKey: true,
             autoIncrement:true
         },
-        fk_livro:{
-            type:sequelize.INTEGER,
+        livroId:{
+            type:sequelize.INTEGER.UNSIGNED,
             allowNull:false,
             foreignKey: true
         },
-        fk_cliente:{
-            type:sequelize.INTEGER,
+        clienteId:{
+            type:sequelize.INTEGER.UNSIGNED,
             allowNull:false,
             foreignKey: true
         },

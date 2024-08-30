@@ -79,14 +79,14 @@ app.post("/administrativo/", async function (req, res) {
     res.send(resultado)
 })
 
-app.post("/emprestimo/", async function (req, res) {
+app.post("/emprestimo/",async function(req,res){
     const resultado = await emprestimo.emprestimo.create({
-        fk_livro: req.body.fk_livro,
-        fk_cliente: req.body.fk_cliente,
-        datadevolucao: req.body.datadevolucao
+        livroId:req.body.livroId,
+        clienteId:req.body.clienteId,
+        datadevolucao:req.body.datadevolucao
     })
     res.send(resultado)
-})
+}) 
 
 app.post("/cliente/", async function (req, res) {
     const resultado = await cliente.cliente.create({
@@ -103,12 +103,13 @@ app.get("/livro/", async function (req, res) {
 })
 
 app.get("/livro/:id", async function (req, res) {
-    const resultado = await livro.livro.findByPk(req.params.id)
+    const resultado = await livro.livro.findByPk(req.params.id, {include: {model: emprestimo.emprestimo}})
     if (resultado == null) {
         res.status(404).send({})
     } else {
         res.send(resultado);
     }
+
 })
 
 app.get("/livro/nome/:nome", async function (req, res) {
@@ -138,7 +139,7 @@ app.get("/cliente/", async function (req, res) {
 })
 
 app.get("/cliente/:id", async function (req, res) {
-    const resultado = await cliente.cliente.findByPk(req.params.id)
+    const resultado = await cliente.cliente.findByPk(req.params.id, {include: {model: emprestimo.emprestimo}})
     if (resultado == null) {
         res.status(404).send({})
     } else {
@@ -163,24 +164,25 @@ app.get("/emprestimo/", async function (req, res) {
     res.send(resultado);
 })
 
-app.get("/emprestimo/:id", async function (req, res) {
-    const resultado = await emprestimo.emprestimo.findByPk(req.params.id)
-    if (resultado == null) {
+app.get("/emprestimo/:id",async function(req, res) {
+    const resultado = await emprestimo.emprestimo.findByPk(req.params.id, { include: [{model: livro.livro}, {model: cliente.cliente}]})
+    if( resultado == null ){
         res.status(404).send({})
-    } else {
+    }else{
         res.send(resultado);
     }
-
+    
 })
 
-app.get("/emprestimo/:datadevolucao", async function (req, res) {
-    const resultado = await emprestimo.emprestimo.findByPk(req.params.datadevolucao)
+app.get("/emprestimo/data/:datadevolucao", async function (req, res) {
+    const resultado = await emprestimo.emprestimo.findAll({
+        where: { datadevolucao: req.params.datadevolucao }
+    })
     if (resultado == null) {
         res.status(404).send({})
     } else {
         res.send(resultado);
     }
-
 })
 
 app.delete("/livro/:id", async function (req, res) {
